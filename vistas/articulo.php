@@ -1,15 +1,17 @@
-<?php 
-
+<?php
+//Activamos el almacenamiento en el buffer
 ob_start();
 session_start();
 
-if(!isset($_SESSION["nombre"])){
-  header("location:login.html");
-}else{
-
-  require('header.php');
-  if($_SESSION['almacen']==1){
-
+if (!isset($_SESSION["nombre"]))
+{
+  header("Location: login.html");
+}
+else
+{
+require 'header.php';
+if ($_SESSION['almacen']==1)
+{
 ?>
 <!--Contenido-->
       <!-- Content Wrapper. Contains page content -->
@@ -20,7 +22,7 @@ if(!isset($_SESSION["nombre"])){
               <div class="col-md-12">
                   <div class="box">
                     <div class="box-header with-border">
-                          <h1 class="box-title">Artículos <button class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                          <h1 class="box-title">Artículo <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
                         <div class="box-tools pull-right">
                         </div>
                     </div>
@@ -29,48 +31,45 @@ if(!isset($_SESSION["nombre"])){
                     <div class="panel-body table-responsive" id="listadoregistros">
                         <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover">
                           <thead>
-                            
-                              <th>Opciones</th>
-                              <th>Nombre</th>
-                              <th>Categoría</th>
-                              <th>Código</th>
-                              <th>Stock</th>
-                              <th>Imagen</th>
-                              <th>Estado</th>
-                            
+                            <th>Opciones</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Código</th>
+                            <th>Stock</th>
+                            <th>Imagen</th>
+                            <th>Estado</th>
                           </thead>
                           <tbody>                            
                           </tbody>
                           <tfoot>
-                              <th>Opciones</th>
-                              <th>Nombre</th>
-                              <th>Categoría</th>
-                              <th>Código</th>
-                              <th>Stock</th>
-                              <th>Imagen</th>
-                              <th>Estado</th>
+                            <th>Opciones</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Código</th>
+                            <th>Stock</th>
+                            <th>Imagen</th>
+                            <th>Estado</th>
                           </tfoot>
                         </table>
                     </div>
-                     <div class="panel-body "  id="formularioregistros">
-                       <form name="formulario" id="formulario" method="POST">
+                    <div class="panel-body" id="formularioregistros">
+                        <form name="formulario" id="formulario" method="POST">
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Nombre:</label>
+                            <label>Nombre(*):</label>
                             <input type="hidden" name="idarticulo" id="idarticulo">
                             <input type="text" class="form-control" name="nombre" id="nombre" maxlength="100" placeholder="Nombre" required>
                           </div>
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Categoria:</label>
-                            <select name="idcategoria" id="idcategoria" class="form-control selectpicker" data-live-search="true" required>                     
-                            </select>
+                            <label>Categoría(*):</label>
+                            <select id="idcategoria" name="idcategoria" class="form-control selectpicker" data-live-search="true" required></select>
                           </div>
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Stock:</label>
+                            <label>Stock(*):</label>
                             <input type="number" class="form-control" name="stock" id="stock" required>
                           </div>
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <label>Descripción:</label>
-                            <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción">
+                            <input type="text" class="form-control" name="descripcion" id="descripcion" maxlength="256" placeholder="Descripción">
                           </div>
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <label>Imagen:</label>
@@ -78,15 +77,13 @@ if(!isset($_SESSION["nombre"])){
                             <input type="hidden" name="imagenactual" id="imagenactual">
                             <img src="" width="150px" height="120px" id="imagenmuestra">
                           </div>
-                          
                           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <label>Código:</label>
-                            <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Código de barras"> <br>
-                            <button type="button" class="btn btn-success" onclick="generarbarcode()">Generar</button>
-                            <button type="button" class="btn btn-info" onclick="imprimir()">Imprimir</button>
+                            <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Código Barras">
+                            <button class="btn btn-success" type="button" onclick="generarbarcode()">Generar</button>
+                            <button class="btn btn-info" type="button" onclick="imprimir()">Imprimir</button>
                             <div id="print">
                               <svg id="barcode"></svg>
-                              
                             </div>
                           </div>
                           <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -104,20 +101,18 @@ if(!isset($_SESSION["nombre"])){
 
     </div><!-- /.content-wrapper -->
   <!--Fin-Contenido-->
-
-  <?php 
-   }else{
-        require 'noacceso.php';
-      }
-
-  require('footer.php');
-
-   ?>
-   <script type="text/javascript" src="../public/js/JsBarcode.all.min.js"></script> 
-   <script type="text/javascript" src="../public/js/jquery.PrintArea.js"></script>
-   <script type="text/javascript" src="scripts/articulo.js"></script>
-   <script src="../public/bootbox.min.js" type="text/javascript"></script>
-  <?php
-    } 
-    ob_end_flush();
-    ?>
+<?php
+}
+else
+{
+  require 'noacceso.php';
+}
+require 'footer.php';
+?>
+<script type="text/javascript" src="../public/js/JsBarcode.all.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.PrintArea.js"></script>
+<script type="text/javascript" src="scripts/articulo.js"></script>
+<?php 
+}
+ob_end_flush();
+?>
